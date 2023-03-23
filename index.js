@@ -57,20 +57,27 @@ const searchForPackage = async (name) => {
 }
 
 const getUserInput = async () => {
-  const input = await inquirer.prompt({
-    name: 'package_name',
-    type: 'input',
-    message: 'What package name you are looking for?',
-  })
+  while (true) {
+    const input = await inquirer.prompt({
+      name: 'package_name',
+      type: 'input',
+      message: 'What package name you are looking for?',
+    })
 
-  const packageName = input.package_name
+    const packageName = input.package_name
 
-  if (!packageName) {
-    console.error('Please provide a package name')
-    process.exit(1)
+    if (!packageName) {
+      console.error('Please provide a package name')
+      continue
+    }
+
+    if (packageName === 'exit') {
+      process.exit(0)
+    }
+
+    await searchForPackage(packageName)
+    break
   }
-
-  searchForPackage(packageName)
 }
 
 console.clear()
@@ -78,7 +85,13 @@ console.clear()
 const packageName = process.argv[2]
 
 if (!packageName) {
-  getUserInput()
+  await getUserInput()
 } else {
-  searchForPackage(packageName)
+  if (packageName === '--loop' || packageName === '-l') {
+    while (true) {
+      await getUserInput()
+    }
+  } else {
+    await searchForPackage(packageName)
+  }
 }
