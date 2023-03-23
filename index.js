@@ -17,29 +17,43 @@ const searchForPackage = async (name) => {
 
   const spinner = createSpinner(`Checking ${name}`).start()
 
-  const orgResponse = await fetch(orgURL)
-  const packageResponse = await fetch(packageURL)
+  try {
+    const orgResponse = await fetch(orgURL)
+    const packageResponse = await fetch(packageURL)
 
-  spinner.stop()
+    spinner.stop()
 
-  const orgExists = orgResponse.status === 200
-  const packageExists = packageResponse.status === 200
+    const orgExists = orgResponse.status === 200
+    const packageExists = packageResponse.status === 200
 
-  const orgExistsMsg = availableMessage(orgExists)
-  const packageExistsMsg = availableMessage(packageExists)
+    const orgExistsMsg = availableMessage(orgExists)
+    const packageExistsMsg = availableMessage(packageExists)
 
-  console.log('\n')
+    console.log('\n')
 
-  if (orgExists && packageExists) {
-    console.log(chalk.red('❌ Both Organization and Package are taken.'))
-  } else if (!orgExists && !packageExists) {
-    console.log(chalk.green('✅ Both Organization and Package are not taken.'))
-  } else {
-    console.log(`🌐 Organization  : ${orgExistsMsg}\n`)
-    console.log(`📦 Package       : ${packageExistsMsg}`)
+    if (orgExists && packageExists) {
+      console.log(chalk.red('❌ Both Organization and Package are taken.'))
+    } else if (!orgExists && !packageExists) {
+      console.log(
+        chalk.green('✅ Both Organization and Package are not taken.')
+      )
+    } else {
+      console.log(`🌐 Organization  : ${orgExistsMsg}\n`)
+      console.log(`📦 Package       : ${packageExistsMsg}`)
+    }
+
+    console.log('\n')
+  } catch (err) {
+    if (err) {
+      spinner.stop()
+      console.log('\n')
+      console.log(
+        chalk.yellow('⚠️ Something went wrong. Please try again later.')
+      )
+      console.log('\n')
+      process.exit(1)
+    }
   }
-
-  console.log('\n')
 }
 
 const getUserInput = async () => {
