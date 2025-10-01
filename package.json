@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "A simple command-line tool to check whether an NPM package or organization name is available or already taken.",
   "type": "module",
+  "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
