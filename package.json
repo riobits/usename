@@ -1,6 +1,6 @@
 {
   "name": "usename",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A simple command-line tool to check whether an NPM package or organization name is available or already taken.",
   "type": "module",
   "main": "dist/index.js",
